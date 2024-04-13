@@ -14,22 +14,22 @@ PLAYER_WIDTH = 20
 PLAYER_HEIGHT = 30
 
 PLAYER_VEL = 5
-STAR_WIDHT = 10
-STAR_HEIGHT = 20
-STAR_VEL = 3
+STAR_WIDHT = 20
+STAR_HEIGHT = 30
+STAR_VEL = 4
 
-FONT = pygame.font.SysFont("carlito", 20)
+FONT = pygame.font.SysFont("timesnewroman", 30, bold = True)
 
 def draw(player, elapsed_time, stars):
     WIN.blit(BG, (0, 0))
 
-    time_text = FONT.render(f"Time: {round(elapsed_time)}s", 1, "white")
-    WIN.blit(time_text, (10, 10))
+    time_text = FONT.render(f"Time: {round(elapsed_time)}s", 2, "white")
+    WIN.blit(time_text, (15, 15))
 
-    pygame.draw.rect(WIN, "green", player)
+    pygame.draw.rect(WIN, (0,204,102), player)
 
     for star in stars:
-        pygame.draw.rect(WIN, "black", star)
+        pygame.draw.rect(WIN, (102,0,102), star)
 
     pygame.display.update()
 
@@ -44,6 +44,8 @@ def main():
 
     star_add_increment = 2000
     star_count = 0
+
+    score = 0
 
     stars = []
     hit = False
@@ -76,16 +78,17 @@ def main():
             star.y += STAR_VEL
             if star.y > HEIGHT:
                 stars.remove(star)
+                score += 1
             elif star.y + star.height >= player.y and star.colliderect(player):
                 stars.remove(star)
                 hit = True
                 break
 
         if hit:
-            lost_text = FONT.render("You lost!", 1, "white")
+            lost_text = FONT.render(f"You lost! Your score was {score}", 1, "black")
             WIN.blit(lost_text, (WIDTH/2 - lost_text.get_width()/2, HEIGHT/2 - lost_text.get_height()/2))
             pygame.display.update()
-            pygame.time.delay(5000)
+            pygame.time.delay(3500)
             break
         
         draw(player, elapsed_time, stars)
