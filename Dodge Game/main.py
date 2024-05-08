@@ -2,12 +2,11 @@ import pygame
 import time
 import random
 
-
 pygame.font.init()
 
 WIDTH, HEIGHT = 1000, 800
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Space Dodge")
+pygame.display.set_caption("Dodge Game")
 
 BG = pygame.transform.scale(pygame.image.load("Dodge Game/bg.jpeg"), (WIDTH, HEIGHT))
 
@@ -98,3 +97,16 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+'''
+Kehitysideat:
+
+Tekstien/taustan muotoilu, jotta näkyisi selkeämmin
+
+Start menu
+Leaderboard (piste-ennätykset talteen)
+
+Palikoiden putoaminen tasaisemmin (ei kolmea yhdessä rivissä, yksittäisiä tiheämmin putoavia voisi kokeilla, myös eri nopeudella putoavia)
+
+jne
+'''

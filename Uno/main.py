@@ -1,9 +1,8 @@
 import random
 
-
+# Rakennetaan pakka
 def buildDeck():
     deck = []
-    #example card: Red 7, Green 8, Blue Skip
     colours = ["Red","Green","Yellow","Blue"]
     values = [0,1,2,3,4,5,6,7,8,9,"Draw Two", "Skip", "Reverse"]
     wilds = ["Wild","Wild Draw Four"]
@@ -30,6 +29,7 @@ def drawCards(numCards):
         cardsDrawn.append(unoDeck.pop(0))
     return cardsDrawn
 
+# Kädessä olevat kortit
 def showHand(player, playerHand):
     print("Player {}'s Turn".format(player+1))
     print("Your Hand")
@@ -55,15 +55,16 @@ discards = []
 
 players = []
 colours = ["Red","Green","Yellow","Blue"]
-numPlayers = int(input("How many players? "))
+numPlayers = int(input("How many players? (2 - 4 players) "))
 while numPlayers<2 or numPlayers>4:
-    numPlayers = int(input("Invalid. Please enter a number between 2-4. How many players? "))
+    numPlayers = int(input("Invalid. Please enter a number between 2 - 4. How many players? "))
 for player in range(numPlayers):
     players.append(drawCards(5))
 
 playerTurn = 0
 playDirection = 1
 playing = True
+# Pelataan viimeiseksi "poistetun" kortin päälle, tarvitaan siis tieto pinon viimeisimmästä kortista
 discards.append(unoDeck.pop(0))
 splitCard = discards[0].split(" ", 1)
 currentColour = splitCard[0]
@@ -81,18 +82,19 @@ while playing:
             cardChosen = int(input("Not a valid card. Which card do you want to play? "))
         print("You played {}".format(players[playerTurn][cardChosen-1]))
         discards.append(players[playerTurn].pop(cardChosen-1))
-        #Check if player won
+        
         if len(players[playerTurn])==0:
             playing = False
             winner = "Player {}".format(playerTurn+1)
         else:
-            #Check for special cards
+            # Kortin valintaan vaikuttaa kortin väri TAI numero
             splitCard = discards[-1].split(" ", 1)
             currentColour = splitCard[0]
             if len(splitCard) == 1:
                 cardVal = "Any"
             else:
                 cardVal = splitCard[1]
+            # Värin vaihto
             if currentColour == "Wild":
                 for x in range(len(colours)):
                     print("{}) {}".format(x+1, colours[x]))
@@ -100,21 +102,25 @@ while playing:
                 while newColour < 1 or newColour > 4:
                     newColour = int(input("Invalid option. What colour would you like to choose? "))
                 currentColour = colours[newColour-1]
+            # Suunnan vaihto
             if cardVal == "Reverse":
                 playDirection = playDirection * -1
+            # Vuoron ohitus
             elif cardVal == "Skip":
                 playerTurn += playDirection
                 if playerTurn >= numPlayers:
                     playerTurn = 0
                 elif playerTurn < 0:
                     playerTurn = numPlayers-1
+            # +2 kortti
             elif cardVal == "Draw Two":
-                playerDraw = playerTurn+playDirection
+                playerDraw = playerTurn + playDirection
                 if playerDraw == numPlayers:
                     playerDraw = 0
                 elif playerDraw < 0:
                     playerDraw = numPlayers-1
                 players[playerDraw].extend(drawCards(2))
+            # +4 kortti
             elif cardVal == "Draw Four":
                 playerDraw = playerTurn+playDirection
                 if playerDraw == numPlayers:
@@ -124,6 +130,7 @@ while playing:
                 players[playerDraw].extend(drawCards(4))
             print("")
     else:
+        # Mikään omista korteista ei sovi
         print("You can't play. You have to draw a card.")
         players[playerTurn].extend(drawCards(1))
 
@@ -135,3 +142,13 @@ while playing:
     
 print("Game Over")
 print("{} is the Winner!".format(winner))
+
+
+
+'''
+Kehitysideat:
+
+Pisteenlasku (useamman pelin kokonaisuuksia, tietystä pisterajasta poikki)
+Useamman kortin pelaaminen samaan aikaan (esim. erivärisiä kortteja voi laittaa monta, kunhan numero pysyy samana)
+jne
+'''
