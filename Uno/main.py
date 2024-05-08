@@ -1,5 +1,6 @@
 import random
 
+
 def buildDeck():
     deck = []
     #example card: Red 7, Green 8, Blue Skip
